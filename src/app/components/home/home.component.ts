@@ -1,3 +1,4 @@
+// src/app/components/home/home.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +21,12 @@ interface Car {
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  featuredCars: Car[] = [
+  // Variables para los filtros
+  selectedBrand: string = '';
+  selectedYear: string = '';
+
+  // Array original de carros
+  allCars: Car[] = [
     {
       id: 1,
       brand: 'Toyota',
@@ -113,6 +119,9 @@ export class HomeComponent {
     }
   ];
 
+  // Array filtrado
+  filteredCars: Car[] = [];
+
   brands: string[] = [
     'Toyota', 
     'Honda', 
@@ -127,6 +136,27 @@ export class HomeComponent {
   ];
   
   years: number[] = [2024, 2023, 2022, 2021, 2020];
+
+  constructor() {
+    // Inicialmente mostrar todos los carros
+    this.filteredCars = [...this.allCars];
+  }
+
+  // Función para filtrar
+  filterCars() {
+    this.filteredCars = this.allCars.filter(car => {
+      const matchesBrand = !this.selectedBrand || car.brand === this.selectedBrand;
+      const matchesYear = !this.selectedYear || car.year === parseInt(this.selectedYear);
+      return matchesBrand && matchesYear;
+    });
+  }
+
+  // Función para limpiar filtros
+  clearFilters() {
+    this.selectedBrand = '';
+    this.selectedYear = '';
+    this.filteredCars = [...this.allCars];
+  }
 
   // Función para formatear precio en pesos mexicanos
   formatPrice(price: number): string {

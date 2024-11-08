@@ -23,26 +23,36 @@
   </div>
 </div>
 
+<!-- Hero Section permanece igual -->
+
 <!-- Search Section -->
 <div class="bg-white py-12">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-scott-gray rounded-lg shadow-xl p-6 md:p-8">
       <h2 class="text-2xl text-white font-itim mb-6">Buscar Vehículos</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <select
+        <!-- Selector de Marca -->
+        <select [(ngModel)]="selectedBrand" (ngModelChange)="filterCars()"
           class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-scott-turquoise focus:ring-2 focus:ring-scott-turquoise focus:outline-none transition-all font-open-sans">
-          <option value="">Seleccionar Marca</option>
+          <option value="">Todas las Marcas</option>
           <option *ngFor="let brand of brands" [value]="brand">{{brand}}</option>
         </select>
-        <select
+
+        <!-- Selector de Año -->
+        <select [(ngModel)]="selectedYear" (ngModelChange)="filterCars()"
           class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-scott-turquoise focus:ring-2 focus:ring-scott-turquoise focus:outline-none transition-all font-open-sans">
-          <option value="">Seleccionar Año</option>
+          <option value="">Todos los Años</option>
           <option *ngFor="let year of years" [value]="year">{{year}}</option>
         </select>
-        <button
+
+        <!-- Botón Limpiar -->
+        <button (click)="clearFilters()"
           class="w-full bg-scott-turquoise hover:bg-opacity-90 text-white p-3 rounded-lg font-open-sans flex items-center justify-center gap-2 transition-all">
-          <span class="material-icons">search</span>
-          Buscar
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Limpiar Filtros
         </button>
       </div>
     </div>
@@ -53,21 +63,31 @@
 <div class="bg-gray-100 py-16">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-3xl font-roboto-slab text-scott-green text-center mb-12">
-      Vehículos Destacados
+      Vehículos Disponibles
     </h2>
+
+    <!-- Mensaje cuando no hay resultados -->
+    <div *ngIf="filteredCars.length === 0" class="text-center py-12">
+      <p class="text-xl text-gray-600">No se encontraron vehículos con los filtros seleccionados.</p>
+      <button (click)="clearFilters()"
+        class="mt-4 bg-scott-green text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+        Limpiar Filtros
+      </button>
+    </div>
+
+    <!-- Grid de Carros -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div *ngFor="let car of featuredCars"
+      <!-- Cambiar esta línea en el grid de carros -->
+      <div *ngFor="let car of filteredCars"
         class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
         <div class="h-48 bg-scott-green-light overflow-hidden">
           <img [src]="car.imageUrl" [alt]="car.brand + ' ' + car.model" class="w-full h-full object-cover">
         </div>
         <div class="p-6">
           <h3 class="font-itim text-xl mb-2">{{car.brand}} {{car.model}}</h3>
-          <div class="space-y-2">
-            <p class="text-scott-gray font-open-sans text-lg font-semibold">
-              {{formatPrice(car.price)}}
-            </p>
-          </div>
+          <p class="text-scott-gray font-open-sans text-lg font-semibold">
+            {{formatPrice(car.price)}}
+          </p>
           <div class="flex justify-between items-center mt-4">
             <span class="text-scott-gray">{{car.year}}</span>
             <button class="bg-scott-green text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all">
@@ -79,6 +99,8 @@
     </div>
   </div>
 </div>
+
+<!-- Rest of the sections remain the same -->
 
 <!-- Call to Action Section -->
 <div class="bg-scott-green py-16">
