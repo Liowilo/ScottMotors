@@ -1,24 +1,70 @@
-<!-- src/app/components/home/home.component.html -->
-<!-- Hero Section -->
-<div class="relative bg-scott-green-light">
+<!-- Header Banner Image -->
+<div class="w-full relative bg-scott-green">
+  <div class="max-w-screen-2xl mx-auto"> <!-- Contenedor para centrar y limitar el ancho máximo -->
+    <img src="assets/images/banner_1_.jpg" alt="Header Banner" class="w-full h-auto object-cover max-h-[320px]"
+      style="aspect-ratio: 1320/259;">
+  </div>
+</div>
+
+<!-- Texto Principal -->
+<section class="relative bg-scott-green-light">
   <div class="absolute inset-0 bg-gradient-to-r from-scott-green to-scott-green-light opacity-90"></div>
   <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
     <div class="text-center">
       <h1 class="text-4xl md:text-5xl font-bold text-white font-roboto-slab mb-4">
         Encuentra tu auto ideal en Scott Motors
       </h1>
-      <p class="text-xl text-white font-open-sans mb-8">
+      <p class="text-white text-xl mb-8">
         La mejor selección de vehículos a los mejores precios
       </p>
       <div class="flex justify-center gap-4">
-        <button
-          class="bg-scott-turquoise hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-open-sans transition-all">
+        <button (click)="scrollToCatalog()"
+          class="bg-scott-turquoise text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors">
           Ver Catálogo
         </button>
-        <button class="bg-scott-gray hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-open-sans transition-all">
+        <button (click)="goToContact()"
+          class="bg-white text-scott-green px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors">
           Contactar
         </button>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Promotional Carousel -->
+<div class="w-full max-w-screen-2xl mx-auto mt-8 relative bg-scott-green">
+  <div class="overflow-hidden">
+    <div class="transition-transform duration-500 ease-out flex"
+      [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+      <div class="w-full flex-shrink-0">
+        <img src="assets/images/Banner_2_.jpg" alt="Promotional Banner" class="w-full h-auto object-cover max-h-[480px]"
+          style="aspect-ratio: 1050/420;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Controles del carrusel ajustados para mejor posición -->
+  <button (click)="prevSlide()"
+    class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  <button (click)="nextSlide()"
+    class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Indicadores ajustados -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3">
+    <div *ngFor="let banner of banners; let i = index" (click)="goToSlide(i)"
+      class="w-4 h-4 rounded-full cursor-pointer transition-colors"
+      [ngClass]="{'bg-scott-turquoise': i === currentIndex, 'bg-white/50': i !== currentIndex}">
     </div>
   </div>
 </div>
@@ -60,47 +106,52 @@
 </div>
 
 <!-- Featured Cars Section -->
-<div class="bg-gray-100 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-roboto-slab text-scott-green text-center mb-12">
-      Vehículos Disponibles
-    </h2>
+<section id="catalog" class="bg-gray-100 py-16">
+  <div class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-roboto-slab text-scott-green text-center mb-12">
+        Vehículos Disponibles
+      </h2>
 
-    <!-- Mensaje cuando no hay resultados -->
-    <div *ngIf="filteredCars.length === 0" class="text-center py-12">
-      <p class="text-xl text-gray-600">No se encontraron vehículos con los filtros seleccionados.</p>
-      <button (click)="clearFilters()"
-        class="mt-4 bg-scott-green text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
-        Limpiar Filtros
-      </button>
-    </div>
+      <!-- Mensaje cuando no hay resultados -->
+      <div *ngIf="filteredCars.length === 0" class="text-center py-12">
+        <p class="text-xl text-gray-600">No se encontraron vehículos con los filtros seleccionados.</p>
+        <button (click)="clearFilters()"
+          class="mt-4 bg-scott-green text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+          Limpiar Filtros
+        </button>
+      </div>
 
-    <!-- Grid de Carros -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Cambiar esta línea en el grid de carros -->
-      <div *ngFor="let car of filteredCars"
-        class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
-        <div class="h-48 bg-scott-green-light overflow-hidden">
-          <img [src]="car.imageUrl" [alt]="car.brand + ' ' + car.model" class="w-full h-full object-cover">
-        </div>
-        <div class="p-6">
-          <h3 class="font-itim text-xl mb-2">{{car.brand}} {{car.model}}</h3>
-          <p class="text-scott-gray font-open-sans text-lg font-semibold">
-            {{formatPrice(car.price)}}
-          </p>
-          <div class="flex justify-between items-center mt-4">
-            <span class="text-scott-gray">{{car.year}}</span>
-            <button class="bg-scott-green text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all">
-              Ver Detalles
-            </button>
+      <!-- Grid de Carros -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Cambiar esta línea en el grid de carros -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105"
+          *ngFor="let car of filteredCars">
+          <div class="h-48 bg-scott-green-light overflow-hidden">
+            <img [src]="car.imageUrl" [alt]="car.brand + ' ' + car.model" class="w-full h-full object-cover">
+          </div>
+
+          <div class="p-6">
+            <h3 class="font-itim text-xl mb-2">{{car.brand}} {{car.model}}</h3>
+            <p class="text-2xl font-bold text-scott-green">{{formatPrice(car.price)}}</p>
+
+            <div class="flex justify-between items-center mt-4">
+              <span class="text-scott-gray">{{car.year}}</span>
+              <button (click)="showCarDetails(car)"
+                class="bg-scott-green text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors">
+                Ver Detalles
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Rest of the sections remain the same -->
+
+<app-car-modal [car]="selectedCar" [isOpen]="isModalOpen" (isOpenChange)="isModalOpen = $event"></app-car-modal>
 
 <!-- Call to Action Section -->
 <div class="bg-scott-green py-16">
@@ -111,7 +162,7 @@
     <p class="text-white text-lg mb-8 font-open-sans">
       Contáctanos hoy y déjanos ayudarte a encontrar el auto perfecto para ti
     </p>
-    <button
+    <button (click)="goToContact()"
       class="bg-scott-turquoise text-white px-8 py-3 rounded-lg font-open-sans hover:bg-opacity-90 transition-all">
       Contactar Ahora
     </button>
