@@ -37,7 +37,7 @@ export class CarService {
       model: 'Civic',
       price: 548000,
       year: 2024,
-      color: 'Negro',
+      color: 'Rojo',
       imageUrl: '/assets/images/honda.jpg'
     },
     {
@@ -46,7 +46,7 @@ export class CarService {
       model: 'Mustang',
       price: 989000,
       year: 2023,
-      color: 'Rojo',
+      color: 'Amarillo',
       imageUrl: '/assets/images/ford.jpg'
     },
     {
@@ -109,7 +109,7 @@ export class CarService {
       model: 'Tucson',
       price: 689000,
       year: 2020,
-      color: 'Plata Brillante',
+      color: 'Negro',
       imageUrl: '/assets/images/hyundai.jpg'
     }
   ];
